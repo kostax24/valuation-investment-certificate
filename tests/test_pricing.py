@@ -92,3 +92,15 @@ axes[1].set_ylabel("Number of simulations")
 
 fig.tight_layout()
 plt.show()
+
+mc_price = result["price"]
+mc_standard_error = result["standard_error"]
+
+convergence["no_call_minus_mc"] = (
+    convergence["no_call_value"] - mc_price
+)
+
+print(f"MC non-callable value: USD {mc_price:.4f}")
+print(f"MC standard error: USD {mc_standard_error:.4f}")
+
+print(convergence.round(4))
