@@ -322,7 +322,7 @@ plt.show()
 
 #  1) No Mean Reversion: GBM assumes prices can drift indefinitely upward. In reality, bond prices are
 #       tethered to par values and macroeconomic cycles. Interest rates and bond prices exhibit strong mean reversion
-#  2) Constant Volatility Myth: GBM assumes constant dollar volatility. For fixed-income products, volatility
+#  2) Constant Volatility: GBM assumes constant dollar volatility. For fixed-income products, volatility
 #       changes over time as bonds approach maturity (the "pull-to-par" effect) and fluctuates
 #       dynamically with the interest rate yield curve.
 #  3) Ignoring the Yield Curve: A Bermudan option allows exercise at discrete times in the future.
