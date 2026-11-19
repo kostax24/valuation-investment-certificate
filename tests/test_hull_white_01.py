@@ -39,3 +39,4 @@ curve_nodes = pd.DataFrame({
 })
 
 print(curve_nodes)
+

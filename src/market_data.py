@@ -109,3 +109,4 @@ def get_treasury_par_yields(valuation_date):
     par_yields = par_yields_pct / 100
 
     return par_yields
+
