@@ -179,138 +179,138 @@ fig.tight_layout()
 plt.show()
 
 ### NO CALL MONTE CARLO PRICING
-import matplotlib
-matplotlib.use("QtAgg")
-
-import matplotlib.pyplot as plt
-
-from src.market_data import (
-    spot_price,
-    time_to_fixing,
-    risk_free_rate,
-    distribution_yield,
-    volatility,
-    time_to_redemption,
-)
-from src.certificate import (
-    initial_fixing_price,
-    barrier_ratio,
-    bonus_ratio,
-)
-from src.pricing import price_non_callable
-
-
-# Run the valuation and retain the simulations for plotting.
-result = price_non_callable(
-    spot_price=spot_price,
-    time_to_fixing=time_to_fixing,
-    risk_free_rate=risk_free_rate,
-    distribution_yield=distribution_yield,
-    volatility=volatility,
-    time_to_redemption=time_to_redemption,
-    n_simulations=10_000,
-    random_seed=42,
-    return_simulations=True,
-)
-
-
-# Extract the simulated terminal prices and undiscounted payoffs.
-terminal_prices = result["terminal_prices"]
-payoffs = result["payoffs"]
-
-
-# Convert contractual ratios into underlying-price thresholds.
-barrier_price = initial_fixing_price * barrier_ratio
-participation_threshold_price = initial_fixing_price * bonus_ratio
-
-fig, axes = plt.subplots(1, 2, figsize=(13, 4))
-
-# Distribution of TLT prices at final fixing.
-axes[0].hist(
-    terminal_prices,
-    bins=40,
-    color="steelblue",
-    edgecolor="white",
-)
-
-axes[0].axvline(
-    barrier_price,
-    color="red",
-    linestyle="--",
-    label="Barrier",
-)
-
-axes[0].axvline(
-    participation_threshold_price,
-    color="darkorange",
-    linestyle="--",
-    label="Participation threshold",
-)
-
-axes[0].set_title("Simulated TLT prices at final fixing")
-axes[0].set_xlabel("TLT price (USD)")
-axes[0].set_ylabel("Number of simulations")
-axes[0].legend()
-
-
-# Distribution of undiscounted payments at redemption.
-axes[1].hist(
-    payoffs,
-    bins=40,
-    color="seagreen",
-    edgecolor="white",
-)
-
-axes[1].set_title("Simulated payments at redemption")
-axes[1].set_xlabel("Redemption payment (USD)")
-axes[1].set_ylabel("Number of simulations")
-
-### TESTING OF CONVERGENCE
-
-mc_price = result["price"]
-mc_standard_error = result["standard_error"]
-
-convergence["no_call_minus_mc"] = (
-    convergence["no_call_value"] - mc_price
-)
-
-print(f"MC non-callable value: USD {mc_price:.4f}")
-print(f"MC standard error: USD {mc_standard_error:.4f}")
-
-print(convergence.round(4))
-
-fig, ax = plt.subplots(figsize=(8, 4))
-
-ax.plot(
-    convergence["n_steps"],
-    convergence["no_call_value"],
-    marker="o",
-    label="Non-callable tree",
-)
-
-ax.axhline(
-    mc_price,
-    color="black",
-    linestyle="--",
-    label="Monte Carlo estimate",
-)
-
-ax.axhspan(
-    mc_price - 1.96 * mc_standard_error,
-    mc_price + 1.96 * mc_standard_error,
-    color="grey",
-    alpha=0.2,
-    label="Approximate 95% MC interval",
-)
-
-ax.set_title("Non-callable tree versus Monte Carlo")
-ax.set_xlabel("Number of tree steps")
-ax.set_ylabel("Present value (USD)")
-ax.legend()
-ax.grid(alpha=0.3)
-
-fig.tight_layout()
-plt.show()
+# import matplotlib
+# matplotlib.use("QtAgg")
+#
+# import matplotlib.pyplot as plt
+#
+# from src.market_data import (
+#     spot_price,
+#     time_to_fixing,
+#     risk_free_rate,
+#     distribution_yield,
+#     volatility,
+#     time_to_redemption,
+# )
+# from src.certificate import (
+#     initial_fixing_price,
+#     barrier_ratio,
+#     bonus_ratio,
+# )
+# from src.pricing import price_non_callable
+#
+#
+# # Run the valuation and retain the simulations for plotting.
+# result = price_non_callable(
+#     spot_price=spot_price,
+#     time_to_fixing=time_to_fixing,
+#     risk_free_rate=risk_free_rate,
+#     distribution_yield=distribution_yield,
+#     volatility=volatility,
+#     time_to_redemption=time_to_redemption,
+#     n_simulations=10_000,
+#     random_seed=42,
+#     return_simulations=True,
+# )
+#
+#
+# # Extract the simulated terminal prices and undiscounted payoffs.
+# terminal_prices = result["terminal_prices"]
+# payoffs = result["payoffs"]
+#
+#
+# # Convert contractual ratios into underlying-price thresholds.
+# barrier_price = initial_fixing_price * barrier_ratio
+# participation_threshold_price = initial_fixing_price * bonus_ratio
+#
+# fig, axes = plt.subplots(1, 2, figsize=(13, 4))
+#
+# # Distribution of TLT prices at final fixing.
+# axes[0].hist(
+#     terminal_prices,
+#     bins=40,
+#     color="steelblue",
+#     edgecolor="white",
+# )
+#
+# axes[0].axvline(
+#     barrier_price,
+#     color="red",
+#     linestyle="--",
+#     label="Barrier",
+# )
+#
+# axes[0].axvline(
+#     participation_threshold_price,
+#     color="darkorange",
+#     linestyle="--",
+#     label="Participation threshold",
+# )
+#
+# axes[0].set_title("Simulated TLT prices at final fixing")
+# axes[0].set_xlabel("TLT price (USD)")
+# axes[0].set_ylabel("Number of simulations")
+# axes[0].legend()
+#
+#
+# # Distribution of undiscounted payments at redemption.
+# axes[1].hist(
+#     payoffs,
+#     bins=40,
+#     color="seagreen",
+#     edgecolor="white",
+# )
+#
+# axes[1].set_title("Simulated payments at redemption")
+# axes[1].set_xlabel("Redemption payment (USD)")
+# axes[1].set_ylabel("Number of simulations")
+#
+# ### TESTING OF CONVERGENCE
+#
+# mc_price = result["price"]
+# mc_standard_error = result["standard_error"]
+#
+# convergence["no_call_minus_mc"] = (
+#     convergence["no_call_value"] - mc_price
+# )
+#
+# print(f"MC non-callable value: USD {mc_price:.4f}")
+# print(f"MC standard error: USD {mc_standard_error:.4f}")
+#
+# print(convergence.round(4))
+#
+# fig, ax = plt.subplots(figsize=(8, 4))
+#
+# ax.plot(
+#     convergence["n_steps"],
+#     convergence["no_call_value"],
+#     marker="o",
+#     label="Non-callable tree",
+# )
+#
+# ax.axhline(
+#     mc_price,
+#     color="black",
+#     linestyle="--",
+#     label="Monte Carlo estimate",
+# )
+#
+# ax.axhspan(
+#     mc_price - 1.96 * mc_standard_error,
+#     mc_price + 1.96 * mc_standard_error,
+#     color="grey",
+#     alpha=0.2,
+#     label="Approximate 95% MC interval",
+# )
+#
+# ax.set_title("Non-callable tree versus Monte Carlo")
+# ax.set_xlabel("Number of tree steps")
+# ax.set_ylabel("Present value (USD)")
+# ax.legend()
+# ax.grid(alpha=0.3)
+#
+# fig.tight_layout()
+# plt.show()
 
 
 #### RESULTS INDICATE that Binomial tree pricing and Monte Carlo pricing produce approximately
@@ -322,7 +322,7 @@ plt.show()
 
 #  1) No Mean Reversion: GBM assumes prices can drift indefinitely upward. In reality, bond prices are
 #       tethered to par values and macroeconomic cycles. Interest rates and bond prices exhibit strong mean reversion
-#  2) Constant Volatility: GBM assumes constant dollar volatility. For fixed-income products, volatility
+#  2) Constant Volatility: GBM assumes constant proportional dollar volatility. For fixed-income products, volatility
 #       changes over time as bonds approach maturity (the "pull-to-par" effect) and fluctuates
 #       dynamically with the interest rate yield curve.
 #  3) Ignoring the Yield Curve: A Bermudan option allows exercise at discrete times in the future.

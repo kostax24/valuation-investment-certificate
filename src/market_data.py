@@ -4,28 +4,59 @@ import numpy as np
 
 from src.certificate import final_fixing_date, redemption_date, CALL_OBSERVATION_DATES, CALL_EARLY_REDEMPTION_DATES
 
+# valuation_date = dt.date(2025, 12, 3)
+# valuation_date = dt.date(2026, 10, 23)
+valuation_date = dt.date(2026, 11, 19)
 
-valuation_date = dt.date(2026, 11, 13)
+# price from Yahoo finance TLT 2025-03-12
+# spot_price = 89.06
 
-# current price from Yahoo finance TLT
-spot_price = 79.38
+# price from Yahoo finance TLT 2026-10-23
+# spot_price = 81.34
 
-# SOFR observation for 2026-11-17, available for our valuation snapshot.
+# price from Yahoo finance TLT 2026-11-19
+spot_price = 80.35
+
+
+# SOFR observation for 2026-03-12, available for our valuation snapshot.
 # Annualised overnight rate, Actual/360.
-SOFR = 0.039
+# SOFR = 0.0395
+
+# SOFR observation for 2026-10-23
+# SOFR = 0.0392
+
+# SOFR observation for 2026-11-19,
+SOFR = 0.0391
+
 
 # Modelling assumption: flat future overnight rate.
 # Convert a repeated one-calendar-day accrual factor into an
 # annual continuously compounded rate on an Actual/365 Fixed basis.
 risk_free_rate = 365.0 * np.log(1 + SOFR / 360.0)
 
-# 13.35% 3y standard annualized vol ## HISTORICAL proxy ## Should be ANNUAL 
-volatility = 0.133
+## HISTORICAL proxy ## Should be ANNUAL
 
-# Approximation: use the trailing cash-distribution yield
+# 3y standard annualized vol as 2026-12-03
+# volatility = 0.154
+
+# 3y standard annualized vol as 2026-10-23
+#volatility = 0.1294
+
+# 3y standard annualized vol as 2026-11-19
+volatility = 0.1252
+
+# Approximation: using the 12M trailing cash-distribution yield
 # as the model's constant continuous proportional yield.
 # This is not an exact conversion of discrete distributions.
-distribution_yield = 0.0493
+
+# as 2025-12-03
+# distribution_yield = 0.043446
+
+# as 2025-10-23
+# distribution_yield = 0.04784
+
+# as 2026-11-19
+distribution_yield = 0.048654
 
 
 # TIME
@@ -37,7 +68,7 @@ time_to_fixing = time_to_fixing_days / 365.0
 time_to_redemption = time_to_redemption_days / 365.0
 
 ## TREE estimation inputs
-steps_per_day = 1
+steps_per_day = 2
 n_steps = time_to_fixing_days * steps_per_day
 
 
